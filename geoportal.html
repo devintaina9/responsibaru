@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <title>WEBGIS DEVINTA CAHAYA PUTRI</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+    
+
+<head>
+
+    <!-- Judul pada tab browser -->
+    <title>WEBGIS DEVINTA CAHAYA PUTRI</title>
+
+    <!-- Leaflet CSS Library -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+
+    <!-- Tab browser icon -->
+    <link rel="icon" type="image/x-icon" href=https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css>
+
+    <!-- Search CSS Library -->
+    <link rel="stylesheet" href="assets/plugins/leaflet-search/leaflet-search.css" />
+
+    <!-- Geolocation CSS Library for Plugin -->
+    <link rel="stylesheet"
+        href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.css" />
+
+    <!-- Leaflet Mouse Position CSS Library -->
+    <link rel="stylesheet" href="assets/plugins/leaflet-mouseposition/L.Control.MousePosition.css" />
+
+    <!-- Leaflet Measure CSS Library -->
+    <link rel="stylesheet" href="assets/plugins/leaflet-measure/leaflet-measure.css" />
+
+    <!-- EasyPrint CSS Library -->
+    <link rel="stylesheet" href="assets/plugins/leaflet-easyprint/easyPrint.css" />
+
+    <!-- Marker Cluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css">
+
+    <!-- Routing CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+
+    <style>
+        /* Background pada Judul */
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .info h2 {
+            margin: 0 0 6px;
+            color: #777;
+            
+        }
+    </style>
+</head>
+
+<body>
+    <div class="jumbotron text-center">
+        <h1>PETA DESTINASI WISATA KABUPATEN KLATEN</h1>
+        <p>Menampilkan berbagai objek wisata menarik</p> 
+      </div>
+      
+    <!-- Leaflet JavaScript Library -->
+    <div id="map" style="height: 100vh;"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <div id="map" style="height: 200px;"></div>
+
+    <!-- Search JavaScript Library -->
+    <script src="assets/plugins/leaflet-search/leaflet-search.js"></script>
+
+    <!-- Geolocation Javascript Library -->
+    <script
+        src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
+
+    <!-- Leaflet Mouse Position JavaScript Library -->
+    <script src="assets/plugins/leaflet-mouseposition/L.Control.MousePosition.js"></script>
+
+    <!-- Leaflet Measure JavaScript Library -->
+    <script src="assets/plugins/leaflet-measure/leaflet-measure.js"></script>
+
+    <!-- EasyPrint JavaScript Library -->
+    <script src="assets/plugins/leaflet-easyprint/leaflet.easyPrint.js"></script>
+
+    <!-- Marker Cluster JS -->
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+    <!-- Routing JS -->
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+    <script>
+        var map = L.map('map').setView([-7.794760241050732, 110.36718249219427], 10); //lat, long, zoom
+
+        var basemap1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="DIVSIG UGM" target="_blank">DIVSIG UGM</a>'
+        });
+
+        var basemap2 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{ z } / { y } / { x }',
+            {
+                attribution: 'Tiles &copy; Esri | <a href="Latihan WebGIS" target="_blank">DIVSIG UGM</a>'
+            });
+        var basemap3 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{ z } / { y } / { x }',
+            {
+                attribution: 'Tiles &copy; Esri | <a href="Lathan WebGIS" target="_blank">DIVSIG UGM</a>'
+            });
+        var basemap4 = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptile s.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+        });
+        basemap1.addTo(map);
+
+        $.getJSON("geoportal.php", function (data) {
+            wfsgeoserver1.addData(data);
+            map.addLayer(wfsgeoserver1);
+            map.fitBounds(wfsgeoserver1.getBounds());
+        });
+
+        var title = new L.Control();
+        title.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+        title.update = function () {
+            this._div.innerHTML = '<h2>WEBGIS | DESTINASI WISATA KLATEN</h2>RESPONSI PEMROGRAMAN SPASIAL : WEB'
+        };
+        title.addTo(map);
+
+        /* Control Layer */
+        var baseMaps = {
+            "OpenStreetMap": basemap1,
+            "Esri World Street": basemap2,
+            "Esri Imagery": basemap3,
+            "Stadia Dark Mode": basemap4
+        };
+
+        L.control.layers(baseMaps).addTo(map);
+
+        /* Scale Bar */
+        L.control.scale({
+            maxWidth: 150, position: 'bottomright'
+        }).addTo(map);
+
+        var wfsgeoserver1 = L.geoJson(null, {
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, {
+                    icon: L.icon({
+                        // iconUrl: "data:image/png;base64,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",
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 32],
+                        popupAnchor: [0, -32],
+                        tooltipAnchor: [16, -20]
+                    })
+                });
+            },
+            onEachFeature: function (feature, layer) {
+                var content = "Kecamatan : " + feature.properties.kecamatan + "<br>" +
+                    "Jumlah Penduduk : " + feature.properties.jumlah + "<br>"
+                // "Telepon : " + feature.properties.telp +
+                // "<img src='data:image/png;base64,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" + feature.properties.photo + "' width='300'>";
+
+                layer.on({
+                    click: function (e) {
+                        wfsgeoserver1.bindPopup(content);
+                    },
+                    mouseover: function (e) {
+                        wfsgeoserver1.bindTooltip(feature.properties.kecamatan);
+                    },
+                    mouseout: function (e) {
+                        wfsgeoserver1.closePopup();
+                    }
+                });
+            }
+        });
+
+        $.getJSON("geoportal.php", function (data) {
+            wfsgeoserver1.addData(data);
+            map.addLayer(wfsgeoserver1);
+            // map.fitBounds(wfsgeoserver1.getBounds());
+        });
+
+    </script>
+    </script>
+
+    
+
+        <!-- Image Watermark -->
+        <script>
+            L.Control.Watermark = L.Control.extend({
+                onAdd: function (map) {
+                    var img = L.DomUtil.create('img');
+                    img.src = 'assets/logo/logomak.jpg';
+                    img.style.width = '80px';
+                    return img;
+                }
+            });
+    
+            L.control.watermark = function (opts) {
+                return new L.Control.Watermark(opts);
+            };
+    
+            L.control.watermark({ position: 'bottomleft' }).addTo(map);
+        </script>
+
+
+    <!-- Image Legend -->
+    <script>
+        L.Control.Legend = L.Control.extend({
+            onAdd: function (map) {
+                var img = L.DomUtil.create('img');
+                img.src = 'assets/legendmak/legendass.jpg';
+                img.style.width = '140px';
+                return img;
+            }
+        });
+
+        L.control.Legend = function (opts) {
+            return new L.Control.Legend(opts);
+        };
+
+        L.control.Legend({ position: 'bottomleft' }).addTo(map);
+    </script>
+    
+
+
+    <!-- Plugin Search -->
+    <script>
+        var searchControl = new L.Control.Search({
+            position: "topleft",
+            layer: wfsgeoserver1,
+            propertyName: "kecamatan",
+            marker: false,
+            moveToLocation: function (latlng, title, map) {
+                var zoom = map.getBoundsZoom(latlng.layer.getBounds());
+                map.setView(latlng, zoom);
+            },
+        });
+        searchControl
+            .on("search:locationfound", function (e) {
+                e.layer.setStyle({
+                    fillColor: "#ffff00",
+                    color: "#0000ff",
+                });
+            })
+            .on("search:collapse", function (e) {
+                featuresLayer.eachLayer(function (layer) {
+                    featuresLayer.resetStyle(layer);
+                });
+            });
+        map.addControl(searchControl);
+    </script>
+
+    <!-- Plugin Geolocation -->
+    <script
+        src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
+    <script>
+        var locateControl = L.control.locate({
+            position: "topleft",
+            drawCircle: true,
+            follow: true,
+            setView: true,
+            keepCurrentZoomLevel: false,
+            markerStyle: {
+                weight: 1,
+                opacity: 0.8,
+                fillOpacity: 0.8,
+            },
+            circleStyle: {
+                weight: 1,
+                clickable: false,
+            },
+            icon: "fas fa-crosshairs",
+            metric: true,
+            strings: {
+                title: "Click for Your Location",
+                popup: "You're here. Accuracy {distance} {unit}",
+                outsideMapBoundsMsg: "Not available"
+            },
+            locateOptions: {
+                maxZoom: 16,
+                watch: true,
+                enableHighAccuracy: true,
+                maximumAge: 10000,
+                timeout: 10000
+            },
+        }).addTo(map);
+    </script>
+
+    <!-- Plugin Mouse Location Coordinate -->
+    <script src="assets/plugins/leaflet-mouseposition/L.Control.MousePosition.js"></script>
+    <script>
+        L.control.mousePosition({
+            position: 'bottomright',
+            separator: ',',
+            prefix: 'Koordinat : '
+        }).addTo(map);
+    </script>
+
+
+    <!-- Plugin Measurement Tool -->
+    <script src="assets/plugins/leaflet-measure/leaflet-measure.js"></script>
+    <script>
+        var measureControl = new L.Control.Measure({
+            position: 'topright',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'hectares',
+            secondaryAreaUnit: 'sqmeters',
+            activeColor: '#FF0000',
+            completedColor: '#00FF00'
+        });
+
+        measureControl.addTo(map);
+    </script>
+
+    
+    <!-- Plugin Marker Cluster -->
+    <script>
+        // Add routing control
+        L.Routing.control({
+            waypoints: [
+          
+            ],
+            routeWhileDragging: true
+        }).addTo(map);
+    </script>
+
+<!--Marker-->
+<script>
+  var addresPoints = [
+      [-7.5756364, 110.4623637, "Deles Indah"]
+  ]
+  var markers = L.markerClusterGroup();
+  for (var i = 0; i < addresPoints.length; i++) {
+      var a = addresPoints[i];
+      var title1 = a[2];
+      var marker = L.marker(new L.latLng(a[0], a[1]), {
+          title: title1
+      });
+
+      marker.bindPopup(title1);
+      markers.addLayer(marker);
+  }
+  map.addLayer(markers); 
+</script>
+
+<script>
+  var addresPoints = [
+      [-7.7407754, 110.5021023, "Candi Plaosan"]
+  ]
+  var markers = L.markerClusterGroup();
+  for (var i = 0; i < addresPoints.length; i++) {
+      var a = addresPoints[i];
+      var title1 = a[2];
+      var marker = L.marker(new L.latLng(a[0], a[1]), {
+          title: title1
+      });
+
+      marker.bindPopup(title1);
+      markers.addLayer(marker);
+  }
+  map.addLayer(markers); 
+</script>
+
+<script>
+var addresPoints = [
+  [-7.7222377,110.5582578, "Museum Gula Gondang Winangoen"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.5916128,110.6480356, "Umbul Manten Klaten"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.6028045,110.6414243, "Mata Air Cokro Klaten"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.7641059,110.6670039, "Bukit Cinta"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.7489735,110.6146663, "Bukit Petrum"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.7494229,110.6160891, "Rowo Jombor"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.7048862,110.5971781, "Alun-Alun Klaten"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.6347165,110.470446, "Bendungan Kendalsari Klaten"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.6905227,110.6114011, "Monumen Juang '45"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+
+
+<script>
+var addresPoints = [
+  [-7.569781,110.4764892, "Jembatan Gantung Girpasang"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+
+<script>
+var addresPoints = [
+  [-7.6264526,110.5858174, "Air Terjun Gemulai Jatinom"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+
+<script>
+var addresPoints = [
+  [-7.7092325,110.6999712, "Museum Argosiagead"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.694445, 110.751933, "Museum Pahlawan"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.614710, 110.661866, "Desa Wisata Area Polanharjo"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.762418, 110.645606, "Bendungan Airtatira"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+  var addresPoints = [
+      [-7.6816857,110.7054306, "Taman Bocah Juwiring"]
+  ]
+  var markers = L.markerClusterGroup();
+  for (var i = 0; i < addresPoints.length; i++) {
+      var a = addresPoints[i];
+      var title1 = a[2];
+      var marker = L.marker(new L.latLng(a[0], a[1]), {
+          title: title1
+      });
+
+      marker.bindPopup(title1);
+      markers.addLayer(marker);
+  }
+  map.addLayer(markers);   
+  
+</script>
+
+<!--Marker-->
+<script>
+  var addresPoints = [
+      [-7.728330, 110.749992, "Embung cikara"]
+  ]
+  var markers = L.markerClusterGroup();
+  for (var i = 0; i < addresPoints.length; i++) {
+      var a = addresPoints[i];
+      var title1 = a[2];
+      var marker = L.marker(new L.latLng(a[0], a[1]), {
+          title: title1
+      });
+
+      marker.bindPopup(title1);
+      markers.addLayer(marker);
+  }
+  map.addLayer(markers); 
+</script>
+
+<script>
+  var addresPoints = [
+      [-7.693163, 110.695537, "Air Terjun Watugandu"]
+  ]
+  var markers = L.markerClusterGroup();
+  for (var i = 0; i < addresPoints.length; i++) {
+      var a = addresPoints[i];
+      var title1 = a[2];
+      var marker = L.marker(new L.latLng(a[0], a[1]), {
+          title: title1
+      });
+
+      marker.bindPopup(title1);
+      markers.addLayer(marker);
+  }
+  map.addLayer(markers); 
+</script>
+
+<script>
+var addresPoints = [
+  [-7.693163, 110.695537, "Taman Andarkara"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.751293, 110.598655, "Umbul Panggiyan"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.729864, 110.622308, "Hutan Kota Klaten"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.674447, 110.521706, "Bukit Parkor"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.635152, 110.541628, "Pemandian Pluneng"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.701971, 110.630486, "Taman Airsolongga"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.717220, 110.702375, "Museum Harudukan"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.718540, 110.694217, "Taman Lampion"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.730647, 110.716083, "Kebun buah Klaten"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+
+
+<script>
+var addresPoints = [
+  [-7.569781,110.4764892, "Plosotan Tebing Klaten"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+
+<script>
+var addresPoints = [
+  [-7.769891, 110.714735, "Waterpak Day's Klaten"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+
+<script>
+var addresPoints = [
+  [-7.758854, 110.725345, "Outbond Polanharjo"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.694445, 110.751933, "Museum Pahlawan"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.614710, 110.661866, "Desa Wisata Area Polanharjo"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+var addresPoints = [
+  [-7.713967, 110.690193, "Rekreasi Alam Terbuka"]
+]
+var markers = L.markerClusterGroup();
+for (var i = 0; i < addresPoints.length; i++) {
+  var a = addresPoints[i];
+  var title1 = a[2];
+  var marker = L.marker(new L.latLng(a[0], a[1]), {
+      title: title1
+  });
+
+  marker.bindPopup(title1);
+  markers.addLayer(marker);
+}
+map.addLayer(markers); 
+</script>
+<script>
+  var addresPoints = [
+      [-7.684126, 110.682469, "Museum Gula Ceper"]
+  ]
+  var markers = L.markerClusterGroup();
+  for (var i = 0; i < addresPoints.length; i++) {
+      var a = addresPoints[i];
+      var title1 = a[2];
+      var marker = L.marker(new L.latLng(a[0], a[1]), {
+          title: title1
+      });
+
+      marker.bindPopup(title1);
+      markers.addLayer(marker);
+  }
+  map.addLayer(markers);   
+  
+</script>
+
+    
+    
+    <!doctype html>
+    <html lang="en">
+    
+    
+    </body>
+    <!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Infografis Klaten</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.42.0/apexcharts.min.css"
+        integrity="sha512-nnNXPeQKvNOEUd+TrFbofWwHT0ezcZiFU5E/Lv2+JlZCQwQ/ACM33FxPoQ6ZEFNnERrTho8lF0MCEH9DBZ/wWw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    
+        <div class="containe mt-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Perbandingan Jenis Destinasi Wisata Klaten</h4>
+                </div>
+                <div class="card-body">
+                    <div id="chart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel"><i
+                                class="fa-solid fa-circle-info"></i>Information</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Nama : Devinta Cahaya Putri</p>
+                        <p>NIM : 22/506129/SV/22075</p>
+                        <p>Kelas : B</p>
+                        <p> Sumber Data : <a href="https://klatenkab.bps.go.id"
+                                target="_blank">https://klatenkab.bps.go.id/</a>/</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </h1>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.42.0/apexcharts.min.js"
+        integrity="sha512-HctQcT5hnI/elQck4950pvd50RuDnjCSGSoHI8CNyQIYVxsUoyJ+gSQIOrll4oM/Z7Kfi7WCLMIbJbiwYHFCpA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        var options = {
+            series: [367, 245, 98, 56],
+            chart: {
+                type: 'donut',
+                width: 500
+            },
+            labels: ['Wisata Buatan', 'Wisata Alam', 'Desa Wisata', 'Wisata Budaya'],
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
+</body>
+
+</html>
+<div class="col-sm-4">
+ <h3>Tabel Pengunjung Destinasi Wisata Kabupaten Klaten</h3>        
+    <div class="card">
+    <img src="assets/img/tabelpengunjung.jpeg" class="card-img-top" alt="Borobudur Temple">
+      </div>
+    
+    </html>
+            <h1>DESTINASI WISATA MENURUT JENISNYA</h1>
+            <div class="col-sm-4">
+            <h3>WISATA ALAM</h3>
+
+                <div class="card">
+                    <img src="assets/img/manten.jpg" class="card-img-top" alt="...">
+             
+                    <div class="card-body">
+                      <h5 class="card-title">Umbul Manten</h5>
+                      <p class="card-text">Tiket masuk : 40.000/orang</p>
+                      <p class="card-text">Jam Buka : 07.00 WIB</p>
+                      <p class="card-text">Ngarigan, Klaten, Jawa Tengah</p>
+                      <a href="https://youtu.be/CbfbNGny4Pg?feature=shared" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                    </div>
+                  </div>
+                  
+                  <div class="card">
+                    <img src="assets/img/sido.jpg" class="card-img-top" alt="...">
+             
+                    <div class="card-body">
+                      <h5 class="card-title">Bukit Sidoguro</h5>
+                      <p class="card-text">Tiket masuk : 10.000/orang</p>
+                      <p class="card-text">Jam Buka : 06.00 WIB</p>
+                      <p class="card-text">Lokasi: Krakitan, Bayat, Jawa Tengah</p>
+                      <a href="https://youtu.be/BczcklOkLUc?feature=shared" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                    </div>
+                  </div>
+                  
+                 
+          
+                  <div class="card">
+                    <img src="assets/img/rowo.jpg" class="card-img-top" alt="...">
+             
+                    <div class="card-body">
+                      <h5 class="card-title">Rowo Jombor</h5>
+                      <p class="card-text">Tiket masuk : 5000/orang</p>
+                      <p class="card-text">Jam Buka : 08.00 WIB</p>
+                      <p class="card-text">Lokasi: Jimbung, Klaten, Jawa Tengah</p>
+                      <a href="https://youtu.be/U60frgl4sp0?feature=shared" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                    </div>
+                  </div>
+          
+                  <div class="card">
+                    <img src="assets/img/umbul_ponggok.jpg" class="card-img-top" alt="...">
+             
+                    <div class="card-body">
+                      <h5 class="card-title">Umbul Ponggok</h5>
+                      <p class="card-text">Tiket masuk : 25.000/orang</p>
+                      <p class="card-text">Jam Buka : 08.00 WIB</p>
+                      <p class="card-text">Lokasi: Polanharjo, Ponggok, Klaten, Jawa Tengah</p>
+                      <a href="https://youtu.be/siNKrfNlmOM?feature=shared" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                    </div>
+                  </div>
+          <div class="col-sm-450">
+            <h3>WISATA BUATAN</h3>
+          
+            <div class="card">
+                <img src="assets/img/gondang.jpg" class="card-img-top" alt="...">
+         
+                <div class="card-body">
+                  <h5 class="card-title">Museum Gula Gondang</h5>
+                  <p class="card-text">Tiket masuk : 50.000/orang</p>
+                  <p class="card-text">Jam Buka : 09.00 WIB</p>
+                  <p class="card-text">Lokasi: Gondang, Klaten, Jawa Tengah</p>
+                  <a href="https://youtu.be/zzf6jTK3tNc?feature=shared" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                </div>
+              </div>
+              
+              <div class="card">
+                <img src="assets/img/gir.jpeg" class="card-img-top" alt="...">
+         
+                <div class="card-body">
+                  <h5 class="card-title">Jembatan Gantung Girpasang</h5>
+                  <p class="card-text">Tiket masuk : 30.000/orang</p>
+                  <p class="card-text">Jam Buka : 08.00 WIB</p>
+                  <p class="card-text">Lokasi: Girpasang, Klaten, Jawa Tengah</p>
+                  <a href="https://www.youtube.com/watch?v=nMqDNc9ch_o&pp=ygUMamVtYmF0YW4gZ2ly" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                </div>
+              </div>
+              
+              <div class="card">
+                <img src="assets/img/juang.jpg" class="card-img-top" alt="...">
+         
+                <div class="card-body">
+                  <h5 class="card-title">Monumen Juang '45</h5>
+                  <p class="card-text">Tiket masuk : Gratis</p>
+                  <p class="card-text">Jam Buka : 08.00 WIB</p>
+                  <p class="card-text">Lokasi: Klaten, Jawa Tengah</p>
+                  <a href="https://www.youtube.com/watch?v=nzSX9RXwSvU&pp=ygUPbW51bWVuIGp1YW5nIDQ1" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                </div>
+              </div>
+      
+              
+            <h3>DESA WISATA</h3>        
+            <div class="card">
+                <img src="assets/img/desawisatabugisan.jpg" class="card-img-top" alt="...">
+         
+                <div class="card-body">
+                  <h5 class="card-title">Desa Wisata Bugisan</h5>
+                  <p class="card-text">Tiket masuk : Gratis</p>
+                  <p class="card-text">Jam Buka : 07.00 WIB</p>
+                  <p class="card-text">Lokasi: Bugisan, Prambanan, Jawa Tengah</p>
+                  <a href="https://youtu.be/Af7JM2Zl8hQ?feature=shared" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                </div>
+              </div>
+              
+              <div class="card">
+                <img src="assets/img/desabayat.jpg" class="card-img-top" alt="...">
+         
+                <div class="card-body">
+                  <h5 class="card-title">Desa Wisata Bayat</h5>
+                  <p class="card-text">Tiket masuk : 5.000</p>
+                  <p class="card-text">Jam Buka : 09.00 WIB</p>
+                  <p class="card-text">Lokasi: Bayat, Jawa Tengah</p>
+                  <a href="https://youtu.be/Ya9LjnglIVg?feature=shared" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                </div>
+              </div>
+              
+              <div class="card">
+                <img src="assets/img/desapolan.jpg" class="card-img-top" alt="...">
+         
+                <div class="card-body">
+                  <h5 class="card-title">Desa Wisata Polanharjo</h5>
+                  <p class="card-text">Tiket masuk : 10.000/orang</p>
+                  <p class="card-text">Jam Buka : 07.00 WIB</p>
+                  <p class="card-text">Lokasi: Polanharjo, Klaten, Jawa Tengah</p>
+                  <a href="https://youtu.be/XpNSCFnTJgY?feature=shared" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                </div>
+              </div>
+            
+                <h3>WISATA BUDAYA</h3>        
+                <div class="card">
+                    <img src="assets/img/candipram.jpg" class="card-img-top" alt="...">
+             
+                    <div class="card-body">
+                      <h5 class="card-title">Candi Prambanan</h5>
+                      <p class="card-text">Tiket masuk : 50.000/orang</p>
+                      <p class="card-text">Jam Buka : 07.00 WIB</p>
+                      <p class="card-text">Lokasi: Bugisan, Prambanan, Jawa Tengah</p>
+                      <a href="https://youtu.be/sDNHiBHMG8s?feature=shared" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                    </div>
+                  </div>
+                  
+                  <div class="card">
+                    <img src="assets/img/sojiwan.jpeg" class="card-img-top" alt="...">
+             
+                    <div class="card-body">
+                      <h5 class="card-title">Candi Sojiwan</h5>
+                      <p class="card-text">Tiket masuk : 5000/orang</p>
+                      <p class="card-text">Jam Buka : 08.00 WIB</p>
+                      <p class="card-text">Lokasi: Kebondalem Kidul, Prambanan, Jawa Tengah</p>
+                      <a href="https://youtu.be/0udYSnoKmqU?feature=shared" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                    </div>
+                  </div>
+                  
+                  <div class="card">
+                    <img src="assets/img/plaosan.jpg" class="card-img-top" alt="...">
+             
+                    <div class="card-body">
+                      <h5 class="card-title">Candi Plaosan</h5>
+                      <p class="card-text">Tiket masuk : 10.000/orang</p>
+                      <p class="card-text">Jam Buka : 08.00 WIB</p>
+                      <p class="card-text">Lokasi: Kebondalem Lor, Prambanan, Jawa Tengah</p>
+                      <a href="https://youtu.be/JjY9_1dsILc?feature=shared" class="btn btn-primary">Klik untuk referensi lebih lanjut</a>
+                    </div>
+                  </div>
+                
+    </div>
+   
+      
+      <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+
+        </ol>
+      </nav>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Nama Kecamatan</th>
+            <th scope="col">Jumlah Wisata Alam</th>
+            <th scope="col">Jumlah Wisata Budaya</th>
+            <th scope="col">Jumlah Wisata Buatan</th>
+            <th scope="col">Jumlah Desa Wisata</th>
+           
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Bayat</td>
+            <td>4</td>
+            <td>4</td>
+            <td>6</td>
+            <td>9</td>  
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Cawas</td>
+            <td>3</td>
+            <td>4</td>
+            <td>2</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Ceper</td>
+            <td>4</td>
+            <td>4</td>
+            <td>6</td>
+            <td>1</td>
+       
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>Delanggu</td>
+            <td>7</td>
+            <td>9</td>
+            <td>2</td>
+            <td>1</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td>Gantiwarno</td>
+            <td>3</td>
+            <td>0</td>
+            <td>2</td>
+            <td>7</td>
+            
+          </tr>
+          <tr>
+            <th scope="row">6</th>
+            <td>Jatinom</td>
+            <td>8</td>
+            <td>4</td>
+            <td>0</td>
+            <td>5</td>
+          
+          </tr>
+          <tr>
+            <th scope="row">7</th>
+            <td>Jogonalan</td>
+            <td>3</td>
+            <td>6</td>
+            <td>2</td>
+            <td>5</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">8</th>
+            <td>Juwiring</td>
+            <td>8</td>
+            <td>4</td>
+            <td>2</td>
+            <td>6</td>
+        
+          </tr>
+          <tr>
+            <th scope="row">9</th>
+            <td>Kalikotes</td>
+            <td>1</td>
+            <td>2</td>
+            <td>2</td>
+            <td>7</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">10</th>
+            <td>Karanganom</td>
+            <td>0</td>
+            <td>4</td>
+            <td>4</td>
+            <td>5</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">11</th>
+            <td>Karangdowo/td>
+            <td>2</td>
+            <td>4</td>
+            <td>1</td>
+            <td>5</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">12</th>
+            <td>Karangnongko</td>
+            <td>3</td>
+            <td>4</td>
+            <td>0</td>
+            <td>5</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">13</th>
+            <td>Kebonarum</td>
+            <td>3</td>
+            <td>1</td>
+            <td>2</td>
+            <td>2</td>
+       
+          </tr>
+          <tr>
+            <th scope="row">14</th>
+            <td>Kemalang</td>
+            <td>0</td>
+            <td>4</td>
+            <td>3</td>
+            <td>5</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">15</th>
+            <td>Klaten Utara</td>
+            <td>5</td>
+            <td>3</td>
+            <td>2</td>
+            <td>1</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">16</th>
+            <td>Klaten Tengah</td>
+            <td>7</td>
+            <td>4</td>
+            <td>2</td>
+            <td>5</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">17</th>
+            <td>Klaten Selatan</td>
+            <td>4</td>
+            <td>4</td>
+            <td>7</td>
+            <td>3</td>
+            
+          </tr>
+          <tr>
+            <th scope="row">18</th>
+            <td>Manisrenggo</td>
+            <td>5</td>
+            <td>1</td>
+            <td>8</td>
+            <td>1</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">19</th>
+            <td>Ngawen</td>
+            <td>1</td>
+            <td>5</td>
+            <td>2</td>
+            <td>5</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">20</th>
+            <td>Pedan</td>
+            <td>2</td>
+            <td>3</td>
+            <td>7</td>
+            <td>3</td>
+            
+          </tr>
+          <tr>
+            <th scope="row">21</th>
+            <td>Polanharjo</td>
+            <td>8</td>
+            <td>5</td>
+            <td>2</td>
+            <td>2</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">22</th>
+            <td>Prambanan</td>
+            <td>6</td>
+            <td>5</td>
+            <td>2</td>
+            <td>3</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">23</th>
+            <td>Trucuk</td>
+            <td>4</td>
+            <td>6</td>
+            <td>2</td>
+            <td>1</td>
+            
+          </tr>
+          <tr>
+            <th scope="row">24</th>
+            <td>Tulung</td>
+            <td>2</td>
+            <td>1</td>
+            <td>2</td>
+            <td>1</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">25</th>
+            <td>Wedi</td>
+            <td>5</td>
+            <td>3</td>
+            <td>0</td>
+            <td>2</td>
+           
+          </tr>
+          <tr>
+            <th scope="row">26</th>
+            <td>Wonosari</td>
+            <td>2</td>
+            <td>2</td>
+            <td>4</td>
+            <td>1</td>
+            
+          </tr>
+        </tbody>
+      </table>
+   
+      
+</html>
